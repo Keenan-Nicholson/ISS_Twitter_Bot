@@ -1,0 +1,31 @@
+{
+  "name": "iss-twitter-bot",
+  "version": "3.0.0",
+  "description": "A bot that scrapes ISS location data from NASA's website and tweets when and where the ISS is visible from Corner Brook, Grand Falls, and St. Johns Newfoundland.",
+  "main": "ISSBot.js",
+  "scripts": {
+    "start": "npm run start-bot",
+    "start-bot": "node ISSBot.js start-bot",
+    "run-job": "node ISSBot.js run-job",
+    "write-locations": "node ISSBot.js write-locations",
+    "read-locations": "node ISSBot.js read-locations",
+    "print-locations": "node ISSBot.js print-locations"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Keenan-Nicholson/ISS_Twitter_Bot.git"
+  },
+  "author": "Keenan Nicholson",
+  "bugs": {
+    "url": "https://github.com/Keenan-Nicholson/ISS_Twitter_Bot/issues"
+  },
+  "homepage": "https://github.com/Keenan-Nicholson/ISS_Twitter_Bot#readme",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
+    "dotenv": "^16.0.2",
+    "minimist": "^1.2.6",
+    "node-cron": "^3.0.2",
+    "node-fetch": "^3.2.10",
+    "twit": "^2.2.11"
+  }
+}
