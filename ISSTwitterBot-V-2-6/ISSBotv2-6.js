@@ -14,10 +14,10 @@ rule.hour = 12;
  * Auth info
  */
 var twt = new twit({
-    consumer_key : 'X85ADJAVNYUsJqbyLh5N0dMWE',
-    consumer_secret : 'l9aQk5hceaY3dhmvGNQm8VZr1eqallJtUhvhiZOIv7Wl9z01Ja',
-    access_token : '933089279475048448-FRaDj7TGbhYBWg5ZT4L2odEXdOLC2i5',
-    access_token_secret : 'KomBBswklryKsYb7QapWuYoGHd7jRt6iBgkOEpwrYPjzy'
+    consumer_key : '',
+    consumer_secret : '',
+    access_token : '',
+    access_token_secret : ''
     });
 
 //Regex conditions for finding info in elements of locationData array
@@ -26,10 +26,10 @@ const regDuration = /(([0-9]) [m][i][n])/;
 const regLocationDegree = /(([0-9])(°) )/;
 
 
-const job = schedule.scheduleJob('*/1 * * * *', function() {
+const job = schedule.scheduleJob(rule, function() {
     const getLocationSJ = async () => {
         // get html text from ISS
-        const response = await fetch('https://spotthestation.nasa.gov/sightings/view.cfm?country=Canada&region=Newfoundland&city=Saint_Johns#.YmhIZdPMK5c')
+        const response = await fetch('')
         
         // using await to ensure that the promise resolves
         const body = await response.text();
@@ -42,7 +42,7 @@ const job = schedule.scheduleJob('*/1 * * * *', function() {
             data.push( tr.text());
         });
         
-        fs.writeFile('C:\\Users\\keena\\OneDrive\\Documents\\ISSTwitterBot\\ISSTwitterBotSourceCode\\twitterBot\\locDataSJ.txt',data.toString(), err => {
+        fs.writeFile('',data.toString(), err => {
             if (err) {
                 console.error(err)
                 return
@@ -54,7 +54,7 @@ const job = schedule.scheduleJob('*/1 * * * *', function() {
 
     const getLocationCB = async () => {
         // get html text from ISS
-        const response = await fetch('https://spotthestation.nasa.gov/sightings/view.cfm?country=Canada&region=Newfoundland&city=Corner_Brook#.YmwIytPMK5c')
+        const response = await fetch('')
         
         // using await to ensure that the promise resolves
         const body = await response.text();
@@ -67,7 +67,7 @@ const job = schedule.scheduleJob('*/1 * * * *', function() {
             data.push( tr.text());
         });
         
-        fs.writeFile('C:\\Users\\keena\\OneDrive\\Documents\\ISSTwitterBot\\ISSTwitterBotSourceCode\\twitterBot\\locDataCB.txt',data.toString(), err => {
+        fs.writeFile('',data.toString(), err => {
             if (err) {
                 console.error(err)
                 return
@@ -79,7 +79,7 @@ const job = schedule.scheduleJob('*/1 * * * *', function() {
 
     const getLocationGFW = async () => {
         // get html text from ISS
-        const response = await fetch('https://spotthestation.nasa.gov/sightings/view.cfm?country=Canada&region=Newfoundland&city=Grand_Falls#.YmwKi9PMK5c')
+        const response = await fetch('')
         
         // using await to ensure that the promise resolves
         const body = await response.text();
@@ -92,7 +92,7 @@ const job = schedule.scheduleJob('*/1 * * * *', function() {
             data.push( tr.text());
         });
         
-        fs.writeFile('C:\\Users\\keena\\OneDrive\\Documents\\ISSTwitterBot\\ISSTwitterBotSourceCode\\twitterBot\\locDataGFW.txt',data.toString(), err => {
+        fs.writeFile('',data.toString(), err => {
             if (err) {
                 console.error(err)
                 return
@@ -103,7 +103,7 @@ const job = schedule.scheduleJob('*/1 * * * *', function() {
     }
     const getLocationGoose = async () => {
         // get html text from ISS
-        const response = await fetch('https://spotthestation.nasa.gov/sightings/view.cfm?country=Canada&region=Newfoundland&city=Goose_Bay#.Ym27iNPMJhE')
+        const response = await fetch('')
         
         // using await to ensure that the promise resolves
         const body = await response.text();
@@ -117,7 +117,7 @@ const job = schedule.scheduleJob('*/1 * * * *', function() {
             data.push( tr.text());
         });
         
-        fs.writeFile('C:\\Users\\keena\\OneDrive\\Documents\\ISSTwitterBot\\ISSTwitterBotSourceCode\\twitterBot\\locDataGoose.txt',data.toString(), err => {
+        fs.writeFile('',data.toString(), err => {
             if (err) {
                 console.error(err)
                 return
@@ -139,7 +139,7 @@ const job = schedule.scheduleJob('*/1 * * * *', function() {
      */
     function readDataSJ(){
         try {
-            const data = fs.readFileSync('C:\\Users\\keena\\OneDrive\\Documents\\ISSTwitterBot\\ISSTwitterBotSourceCode\\twitterBot\\locDataSJ.txt', 'utf8');
+            const data = fs.readFileSync('', 'utf8');
             return data;
         } catch (err) {
             console.error(err);
@@ -147,7 +147,7 @@ const job = schedule.scheduleJob('*/1 * * * *', function() {
     }
     function readDataCB(){
         try {
-            const data = fs.readFileSync('C:\\Users\\keena\\OneDrive\\Documents\\ISSTwitterBot\\ISSTwitterBotSourceCode\\twitterBot\\locDataCB.txt', 'utf8');
+            const data = fs.readFileSync('', 'utf8');
             return data;
         } catch (err) {
             console.error(err);
@@ -155,7 +155,7 @@ const job = schedule.scheduleJob('*/1 * * * *', function() {
     }
     function readDataGFW(){
         try {
-            const data = fs.readFileSync('C:\\Users\\keena\\OneDrive\\Documents\\ISSTwitterBot\\ISSTwitterBotSourceCode\\twitterBot\\locDataGFW.txt', 'utf8');
+            const data = fs.readFileSync('', 'utf8');
             return data;
         } catch (err) {
             console.error(err);
@@ -163,7 +163,7 @@ const job = schedule.scheduleJob('*/1 * * * *', function() {
     }
     function readDataGoose(){
         try {
-            const data = fs.readFileSync('C:\\Users\\keena\\OneDrive\\Documents\\ISSTwitterBot\\ISSTwitterBotSourceCode\\twitterBot\\locDataGoose.txt', 'utf8');
+            const data = fs.readFileSync('', 'utf8');
             return data;
         } catch (err) {
             console.error(err);
