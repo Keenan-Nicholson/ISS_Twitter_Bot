@@ -3,7 +3,7 @@ A bot that scrapes ISS location data from NASA's website and tweets when and whe
 
 @Author Keenan Nicholson
 
-@Version 2.4
+@Version 2.6
 
   
 
