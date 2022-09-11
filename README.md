@@ -4,4 +4,6 @@ A bot that scrapes ISS location data from NASA's website and tweets when and whe
 
 @Author Keenan Nicholson
 
+Special thanks to Jack Harrhy (https://jackharrhy.dev/) for his contribution
+
 @Version 3
