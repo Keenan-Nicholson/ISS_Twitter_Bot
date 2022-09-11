@@ -75,15 +75,14 @@ const job = async () => {
       const directionIndex1 = locationData[i].lastIndexOf(",");
       const directionIndex2 = locationData[i].indexOf("°");
       if (locationData[i].slice(26, 32) == tomorrow) {
-        const tweetText = `The #ISS will be visible from ${locationName} tomorrow, 
-${tomorrow} at ${locationData[i].match(regTime)[0]} for ${
+        const tweetText = `The #ISS will be visible from ${locationName} tomorrow, ${tomorrow} at ${locationData[i].match(regTime)[0]} for ${
           locationData[i].match(regDuration)[0]
-        } "(s)
+        }(s)
 
 Location: ${locationData[i].match(regLocationDegree[0])} ${locationData[
           i
         ].slice(directionIndex2 + 2, directionIndex1)}
-#StJohns #CornerBrook #GFW #GrandFalls #GooseBay #HVGB #Labrador #Newfoundland #NFLD #explorenl #NASA #ISS #SpaceStation #Astronomy`;
+#StJohns #CornerBrook #GFW #GrandFalls #GooseBay #HVGB #Labrador #Newfoundland #NFLD #explorenl #nlwx #NASA #ISS #SpaceStation #Astronomy`;
 
         console.log(`Tweet: ${tweetText}`);
         if (twt !== undefined) {
