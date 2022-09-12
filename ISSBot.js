@@ -4,6 +4,19 @@ const cheerio = require("cheerio");
 const cron = require("node-cron");
 const minimist = require("minimist");
 const dotenv = require("dotenv");
+const express = require("express");
+
+const app = express();
+const port = process.env.PORT || 3000;
+
+app.get("/", async (req, res) => {
+  const html = `<h1>Hello From ISSBot!</h1>
+<code><pre>${JSON.stringify(await readLocations(), null, 2)}</pre></code>`;
+  res.send(html);
+});
+
+const startServer = () =>
+  app.listen(port, () => console.log(`ISSBot listening on port ${port}!`));
 
 dotenv.config();
 const argv = minimist(process.argv.slice(2));
@@ -12,7 +25,6 @@ const fetch = (...args) =>
 
 // https://crontab.guru/#0_12_*_*_*
 const cronSchedule = "0 12 * * *";
-
 
 let twt;
 
@@ -70,7 +82,7 @@ const job = async () => {
 
   const tomorrow = tomorrowDate.toDateString().slice(4, 10);
 
-  var tweetText = '';
+  let tweetText = "";
 
   const postUpdate = (locationData, locationName) => {
     console.log(`Posting updates for ${locationName}`);
@@ -78,9 +90,9 @@ const job = async () => {
       const directionIndex1 = locationData[i].lastIndexOf(",");
       const directionIndex2 = locationData[i].indexOf("°");
       if (locationData[i].slice(26, 32) == tomorrow) {
-          tweetText = `The #ISS will be visible from ${locationName} tomorrow, ${tomorrow} at ${locationData[i].match(regTime)[0]} for ${
-          locationData[i].match(regDuration)[0]
-        }(s)
+        tweetText = `The #ISS will be visible from ${locationName} tomorrow, ${tomorrow} at ${
+          locationData[i].match(regTime)[0]
+        } for ${locationData[i].match(regDuration)[0]}(s)
 
 Location: ${locationData[i].match(regLocationDegree[0])} ${locationData[
           i
@@ -95,7 +107,7 @@ Location: ${locationData[i].match(regLocationDegree[0])} ${locationData[
         }
       }
     }
-    if(tweetText == ''){
+    if (tweetText == "") {
       tweetText = `The #ISS will not be visible from ${locationName} tomorrow, ${tomorrow}.`;
       console.log(tweetText);
 
@@ -104,7 +116,7 @@ Location: ${locationData[i].match(regLocationDegree[0])} ${locationData[
       } else {
         console.log("Twitter disabled, not actually tweeting");
       }
-      tweetText ='';
+      tweetText = "";
     }
   };
 
@@ -126,6 +138,7 @@ const main = async () => {
       cron.schedule(cronSchedule, async () => {
         await job();
       });
+      startServer();
       break;
     case "run-job":
       await job();
