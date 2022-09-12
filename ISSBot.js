@@ -65,7 +65,7 @@ const writeLocations = async (locations) => {
 const job = async () => {
   const todayDate = new Date();
   const tomorrowDate = new Date();
-  tomorrowDate.setDate(todayDate.getDate() + 3);
+  tomorrowDate.setDate(todayDate.getDate() + 1);
   console.log(`Running job: Today ${todayDate}, Tomorrow ${tomorrowDate}`);
 
   const tomorrow = tomorrowDate.toDateString().slice(4, 10);
@@ -104,7 +104,7 @@ Location: ${locationData[i].match(regLocationDegree[0])} ${locationData[
       } else {
         console.log("Twitter disabled, not actually tweeting");
       }
-      tweetText =' ';
+      tweetText ='';
     }
   };
 
