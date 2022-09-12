@@ -13,6 +13,7 @@ const fetch = (...args) =>
 // https://crontab.guru/#0_12_*_*_*
 const cronSchedule = "0 12 * * *";
 
+
 let twt;
 
 if (process.env.ISS_BOT_TWITTER_ENABLED === "true") {
@@ -64,10 +65,12 @@ const writeLocations = async (locations) => {
 const job = async () => {
   const todayDate = new Date();
   const tomorrowDate = new Date();
-  tomorrowDate.setDate(todayDate.getDate() + 1);
+  tomorrowDate.setDate(todayDate.getDate() + 3);
   console.log(`Running job: Today ${todayDate}, Tomorrow ${tomorrowDate}`);
 
   const tomorrow = tomorrowDate.toDateString().slice(4, 10);
+
+  var tweetText = '';
 
   const postUpdate = (locationData, locationName) => {
     console.log(`Posting updates for ${locationName}`);
@@ -75,7 +78,7 @@ const job = async () => {
       const directionIndex1 = locationData[i].lastIndexOf(",");
       const directionIndex2 = locationData[i].indexOf("°");
       if (locationData[i].slice(26, 32) == tomorrow) {
-        const tweetText = `The #ISS will be visible from ${locationName} tomorrow, ${tomorrow} at ${locationData[i].match(regTime)[0]} for ${
+          tweetText = `The #ISS will be visible from ${locationName} tomorrow, ${tomorrow} at ${locationData[i].match(regTime)[0]} for ${
           locationData[i].match(regDuration)[0]
         }(s)
 
@@ -91,6 +94,17 @@ Location: ${locationData[i].match(regLocationDegree[0])} ${locationData[
           console.log("Twitter disabled, not actually tweeting");
         }
       }
+    }
+    if(tweetText == ''){
+      tweetText = `The #ISS will not be visible from ${locationName} tomorrow, ${tomorrow}.`;
+      console.log(tweetText);
+
+      if (twt !== undefined) {
+        twt.post("statuses/update", { status: tweetText });
+      } else {
+        console.log("Twitter disabled, not actually tweeting");
+      }
+      tweetText =' ';
     }
   };
 
