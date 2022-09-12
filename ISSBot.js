@@ -10,8 +10,13 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.get("/", async (req, res) => {
-  const html = `<h1>Hello From ISSBot!</h1>
-<code><pre>${JSON.stringify(await readLocations(), null, 2)}</pre></code>`;
+  let html = `<h1>Hello From ISSBot!</h1>`;
+  try {
+    html += `<code><pre>${JSON.stringify(await readLocations(), null, 2)}</pre></code>`;
+  } catch(error) {
+    html += error;
+  }
+
   res.send(html);
 });
 
