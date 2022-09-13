@@ -16,7 +16,7 @@ app.get("/", async (req, res) => {
   } catch(error) {
     html += error;
   }
-
+  curl https://www.mbusnews.info/api/timetrack/json/
   res.send(html);
 });
 
@@ -29,7 +29,7 @@ const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
 // https://crontab.guru/#0_12_*_*_*
-const cronSchedule = "0 12 * * *";
+const cronSchedule = "48 19 * * *";
 
 let twt;
 
