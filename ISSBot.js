@@ -9,7 +9,7 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 3000;
 
-const locs = process.env.LOCATIONS || "./locations.json";
+const locs = process.env.LOCATIONS || "locations.json";
 
 app.get("/", async (req, res) => {
   let html = `<h1>Hello From ISSBot!</h1>`;
