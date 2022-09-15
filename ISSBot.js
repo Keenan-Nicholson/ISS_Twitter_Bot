@@ -28,7 +28,7 @@ const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
 // https://crontab.guru/#0_12_*_*_*
-const cronSchedule = "48 19 * * *";
+const cronSchedule = "0 12 * * *";
 
 let twt;
 
