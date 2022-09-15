@@ -9,6 +9,8 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 3000;
 
+const locations = process.env.LOCATIONS;
+
 app.get("/", async (req, res) => {
   let html = `<h1>Hello From ISSBot!</h1>`;
   try {
@@ -71,11 +73,11 @@ const getLocations = async () => ({
 });
 
 const readLocations = async () => {
-  return JSON.parse(await fs.readFile("locations.json", "utf-8"));
+  return JSON.parse(await fs.readFile(locations, "utf-8"));
 };
 
 const writeLocations = async (locations) => {
-  await fs.writeFile("locations.json", JSON.stringify(locations, null, 2));
+  await fs.writeFile(locations, JSON.stringify(locations, null, 2));
 };
 
 const job = async () => {

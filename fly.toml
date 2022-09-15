@@ -10,6 +10,7 @@ processes = []
 
 [env]
   PORT = "8080"
+  LOCATIONS = "/data/locations.json"
 
 [experimental]
   allowed_public_ports = []
@@ -40,3 +41,7 @@ processes = []
     interval = "15s"
     restart_limit = 0
     timeout = "2s"
+
+[mounts]
+  source="myapp_data"
+  destination="/data/locations.json"
