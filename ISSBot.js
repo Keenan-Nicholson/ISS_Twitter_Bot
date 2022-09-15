@@ -16,7 +16,6 @@ app.get("/", async (req, res) => {
   } catch(error) {
     html += error;
   }
-  curl https://www.mbusnews.info/api/timetrack/json/
   res.send(html);
 });
 
