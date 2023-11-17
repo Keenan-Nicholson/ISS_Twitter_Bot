@@ -10,7 +10,6 @@ const argv = minimist(process.argv.slice(2));
 const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
-// https://crontab.guru/#0_12_*_*_*
 const cronSchedule = "0 12 * * *";
 
 let twt;
