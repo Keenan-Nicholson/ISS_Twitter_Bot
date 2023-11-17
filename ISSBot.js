@@ -4,25 +4,6 @@ const cheerio = require("cheerio");
 const cron = require("node-cron");
 const minimist = require("minimist");
 const dotenv = require("dotenv");
-const express = require("express");
-
-const app = express();
-const port = process.env.PORT || 3000;
-
-const locs = process.env.LOCATIONS || "locations.json";
-
-app.get("/", async (req, res) => {
-  let html = `<h1>Hello From ISSBot!</h1>`;
-  try {
-    html += `<code><pre>${JSON.stringify(await readLocations(), null, 2)}</pre></code>`;
-  } catch(error) {
-    html += error;
-  }
-  res.send(html);
-});
-
-const startServer = () =>
-  app.listen(port, () => console.log(`ISSBot listening on port ${port}!`));
 
 dotenv.config();
 const argv = minimist(process.argv.slice(2));
@@ -34,14 +15,12 @@ const cronSchedule = "0 12 * * *";
 
 let twt;
 
-if (process.env.ISS_BOT_TWITTER_ENABLED === "true") {
-  twt = new Twit({
-    consumer_key: process.env.ISS_BOT_TWITTER_CONSUMER_KEY,
-    consumer_secret: process.env.ISS_BOT_TWITTER_CONSUMER_SECRET,
-    access_token: process.env.ISS_BOT_ACCESS_TOKEN,
-    access_token_secret: process.env.ISS_BOT_ACCESS_TOKEN_SECRET,
-  });
-}
+twt = new Twit({
+  consumer_key: process.env.ISS_BOT_TWITTER_CONSUMER_KEY,
+  consumer_secret: process.env.ISS_BOT_TWITTER_CONSUMER_SECRET,
+  access_token: process.env.ISS_BOT_ACCESS_TOKEN,
+  access_token_secret: process.env.ISS_BOT_ACCESS_TOKEN_SECRET,
+});
 
 // Regex conditions for finding info in elements of locationData array
 const regTime = /(([01]?[0-9]):([0-5][0-9]) ([AaPp][Mm]))/;
@@ -73,11 +52,11 @@ const getLocations = async () => ({
 });
 
 const readLocations = async () => {
-  return JSON.parse(await fs.readFile(locs, "utf-8"));
+  return JSON.parse(await fs.readFile("locations.json", "utf-8"));
 };
 
 const writeLocations = async (locations) => {
-  await fs.writeFile(locs, JSON.stringify(locations, null, 2));
+  await fs.writeFile("locations.json", JSON.stringify(locations, null, 2));
 };
 
 const job = async () => {
@@ -86,16 +65,20 @@ const job = async () => {
   tomorrowDate.setDate(todayDate.getDate() + 1);
   console.log(`Running job: Today ${todayDate}, Tomorrow ${tomorrowDate}`);
 
-  const tomorrow = tomorrowDate.toDateString().slice(4, 10);
+  let tomorrow = tomorrowDate.toDateString().slice(4, 10);
 
   let tweetText = "";
+
+  if (tomorrow[4] == "0") {
+    tomorrow = tomorrow.replace("0", "");
+  }
 
   const postUpdate = (locationData, locationName) => {
     console.log(`Posting updates for ${locationName}`);
     for (let i = 0; i < locationData.length; i++) {
       const directionIndex1 = locationData[i].lastIndexOf(",");
       const directionIndex2 = locationData[i].indexOf("°");
-      if (locationData[i].slice(26, 32) == tomorrow) {
+      if (locationData[i].slice(26, 32).replace(",", "") == tomorrow) {
         tweetText = `The #ISS will be visible from ${locationName} tomorrow, ${tomorrow} at ${
           locationData[i].match(regTime)[0]
         } for ${locationData[i].match(regDuration)[0]}(s)
@@ -103,7 +86,7 @@ const job = async () => {
 Location: ${locationData[i].match(regLocationDegree[0])} ${locationData[
           i
         ].slice(directionIndex2 + 2, directionIndex1)}
-#StJohns #CornerBrook #GFW #GrandFalls #GooseBay #HVGB #Labrador #Newfoundland #NFLD #explorenl #nlwx #NASA #ISS #SpaceStation #Astronomy`;
+#StJohns #CornerBrook #GFW #GrandFalls #GooseBay #HVGB #Labrador #Newfoundland #nlwx #NFLD #explorenl #NASA #ISS #SpaceStation #Astronomy`;
 
         console.log(`Tweet: ${tweetText}`);
         if (twt !== undefined) {
@@ -114,9 +97,9 @@ Location: ${locationData[i].match(regLocationDegree[0])} ${locationData[
       }
     }
     if (tweetText == "") {
-      tweetText = `The #ISS will not be visible from ${locationName} tomorrow, ${tomorrow}.`;
-      console.log(tweetText);
+      tweetText = `The #ISS will not be visible from ${locationName} tomorrow, ${tomorrow}.
 
+#StJohns #CornerBrook #GFW #GrandFalls #GooseBay #HVGB #Labrador #Newfoundland #nlwx #NFLD #explorenl #NASA #ISS #SpaceStation #Astronomy`;
       if (twt !== undefined) {
         twt.post("statuses/update", { status: tweetText });
       } else {
@@ -144,7 +127,6 @@ const main = async () => {
       cron.schedule(cronSchedule, async () => {
         await job();
       });
-      startServer();
       break;
     case "run-job":
       await job();
